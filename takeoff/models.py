@@ -22,7 +22,6 @@ class PushUser(models.Model):
 	reg_id = models.CharField(max_length=100)
 	android_version = models.CharField(max_length=10)
 	screen_resolution = models.CharField(max_length=12,default='1280x800')
-	lib_version = models.CharField(max_length=10,default='0.1')
 
 class PushMessage(models.Model):
 	project = models.ForeignKey(Project)
