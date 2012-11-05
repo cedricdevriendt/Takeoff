@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block center_content %}
+  
+  <div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span9">
+      <h1>Projects</h1>
+  
+	
+		{% if all_projects %}
+    <table class="table table-striped table-hover">
+    <tr>
+		<th>Project name</th>
+		<th>API key</th>
+		<th>Pushes this month</th>
+		<th>Pushes all time</th>
+	</tr>
+	{% for project in all_projects %}
+    <tr>
+		<td><a href="/project/{{ project.id }}/">{{ project.name }}</a></td>
+		<td>{{project.key}}</td>
+		<td>{{project.pushes_sent_month}}</td>
+		<td>{{project.pushes_sent_all_time}}</td>
+	</tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No projects are available.</p>
+{% endif %}
+
+<p><a href="/project/new">Creat new project</a></p>
+    </div>
+    <div class="span3">
+      <h4>Download latest library<h4>
+	  <div class="btn-group">
+  <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+    Download now
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+    <li><p><a href="#">Android v 0.1</a></p></li>
+	<li><p><a href="#">iOS v 0.1</a></p></li>
+  </ul>
+</div>
+	  <h4>Follow Us<h4>
+	  <a href="https://twitter.com/ceeetn" class="twitter-follow-button" data-show-count="false">Follow @ceeetn</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+  </div>
+</div>
+  
+  
+  
+{% endblock center_content %}

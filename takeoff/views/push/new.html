@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block center_content %}
+        {% if project %}
+		<h1>Project {{project.name}}</h1>		
+		 <div class="row-fluid">
+    <div class="span4">
+	<div class="sidebar-nav">
+	<div class="well" style="width:300px; padding: 8px 0;">
+		<ul class="nav nav-list">
+		  <li><a href="/project/{{ project.id }}/"> Details</a></li>		
+		  <li><a href="/project/{{ project.id }}/edit""> Edit</a></li>
+		  <li><a href="#"> Statistics</a></li>
+          <li class="active"><a href="/project/{{ project.id }}/push"> Push</a></li>
+		  <li><a href="#"> Rich Push</a></li>
+		  <li><a href="#"> In-App Purchase</a></li>
+		  <li><a href="#"> Subscriptions</a></li>
+		</ul>
+	</div>
+</div>
+	</div>
+    <div class="span8">
+        <h1>Push message</h1>
+		
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="/project/{{ project.id }}/push">Push</a></li>
+			<li><a href="/project/{{ project.id }}/history">Push history</a></li>
+			<li><a href="/project/{{ project.id }}/info">Info</a></li>
+		</ul>
+		
+		
+		{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+<form method="post" action="/project/{{ project.id }}/push">
+{% csrf_token %}
+  <div class="control-group">
+    <div class="controls">
+      <input type="text" id="name" name="alert" placeholder="Alert">
+    </div>
+	<div class="controls">
+      <input type="text" id="extra_key" name="extra_key" placeholder="Extra key">
+    </div>
+	<div class="controls">
+      <input type="text" id="extra_value" name="extra_value" placeholder="Extra Value"></textarea>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">Send push message</button>
+    </div>
+  </div>
+</form>
+{% endif %}
+{% endblock center_content %}

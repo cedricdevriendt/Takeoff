@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block center_content %}
+        <h1>Create new project</h1>
+		
+		{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+<form method="post" action=".">
+{% csrf_token %}
+  <div class="control-group">
+    <div class="controls">
+      <input type="text" id="name" name="name" placeholder="Project name">
+    </div>
+	<div class="controls">
+      <input type="text" id="package_name" name="package_name" placeholder="Android package name">
+    </div>
+	<div class="controls">
+      <textarea rows="3"  type="text" id="gcm_key" name="gcm_key" placeholder="Google Cloud Message Key"></textarea>
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">Create project</button>
+    </div>
+  </div>
+</form>
+{% endblock center_content %}

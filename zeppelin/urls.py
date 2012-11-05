@@ -1,0 +1,34 @@
+from django.conf.urls import patterns, include, url
+from django.views.generic.simple import redirect_to
+
+from tastypie.api import Api
+from takeoff.api import ProjectResource,PushUserResource
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+api = Api(api_name='v1')
+api.register(ProjectResource())
+api.register(PushUserResource())
+
+urlpatterns = patterns('takeoff.views',
+    # Main project:
+    url(r'^$', 'index'),
+	url(r'^project/new/$', 'new'),
+    url(r'^project/(?P<project_id>\d+)/$', 'detail'),
+	url(r'^project/(?P<project_id>\d+)/edit$', 'edit'),
+	url(r'^project/(?P<project_id>\d+)/push$', 'send_push'),
+	url(r'^project/(?P<project_id>\d+)/history$', 'push_history'),
+	url(r'^project/create/$', 'new'),
+	url(r'^user/login/$','user_login'),
+	url(r'^user/logout/$','user_logout'),
+	url(r'^accounts/login/$',redirect_to, {'url': '/user/login/'}),
+    
+	# Admin :
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+	
+	# Api :
+	(r'^api/', include(api.urls)),
+)
