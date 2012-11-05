@@ -69,8 +69,6 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-	#'C:/Users/johan-liliane/Documents/PythonDev/zeppelin/takeoff/bootstrap/',
-	#'C:/Users/johan-liliane/Documents/PythonDev/zeppelin/takeoff/',
 )
 
 # List of finder classes that know how to find static files in
@@ -107,9 +105,7 @@ ROOT_URLCONF = 'zeppelin.urls'
 WSGI_APPLICATION = 'zeppelin.wsgi.application'
 
 TEMPLATE_DIRS = (
-	"C:/Users/johan-liliane/Documents/PythonDev/zeppelin/takeoff/views",
-	#"C:/Users/johan-liliane/Documents/PythonDev/zeppelin/takeoff/views",
-	#"C:/Users/johan-liliane/Documents/PythonDev/zeppelin/takeoff/bootstrap",
+	"C:/takeoff/takeoff/views",
 	#os.path.join(os.path.dirname(__file__), 'views/static').replace('\\','/'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
