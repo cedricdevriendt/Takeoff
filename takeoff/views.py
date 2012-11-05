@@ -7,7 +7,6 @@ from django.forms import ModelForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from takeoff.util import randomHash
 import datetime
 import logging
