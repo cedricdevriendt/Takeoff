@@ -19,8 +19,6 @@
 </div>
 	</div>
     <div class="span8">
-
-	
 	<h1>Push message</h1>
 		
 		<ul class="nav nav-tabs">
@@ -28,6 +26,10 @@
 			<li class="active"><a href="/project/{{ project.id }}/history">Push history</a></li>
 			<li><a href="/project/{{ project.id }}/info">Info</a></li>
 		</ul>
+		
+	{% if push_result %}
+		Push result
+	{% endif %}
 	
 	<table class="table table-striped">
     {% if all_messages %}
@@ -38,6 +40,8 @@
 	{% endfor %}
 	</tr>
     </table>
+
+</div>
 	</div>
 {% endif %}
 {% endif %}

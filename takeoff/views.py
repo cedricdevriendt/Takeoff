@@ -7,6 +7,7 @@ from django.forms import ModelForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from takeoff.util import randomHash
 import datetime
 import logging
@@ -35,6 +36,9 @@ def send_gcm_message(api_key, reg_id, data, collapse_key=None):
 	result = urllib2.urlopen(request).read()
 
 	return result
+	
+def parse_result_json(result):
+	json = result
 
 @login_required
 def index(request):
@@ -162,6 +166,7 @@ def send_push(request, project_id):
 		key = request.POST.get('extra_key', '')
 		value = request.POST.get('extra_value', '')
 		
+		# First save the message (later update the status of the message)
 		push = PushMessage()
 		push.content = alert + ";" + key + ";" + value
 		push.project = project
@@ -174,10 +179,9 @@ def send_push(request, project_id):
 		reg_ids = PushUser.objects.filter(project_id=project)
 
 		#Send actual push to the Google Servers
-		#return HttpResponse(project.android_gcm_key)
 		result = send_gcm_message(project.android_gcm_key, '123456789', alert, '')
-		return HttpResponse(result)
-		#return HttpResponseRedirect("/project/" + str(project.id) + "/history")
+
+		return HttpResponseRedirect("/project/" + str(project.id) + "/history/"+ str(push.id))
 	else:
 		return render_to_response('push/new.html', {
 			'error':'',
@@ -185,7 +189,10 @@ def send_push(request, project_id):
 			'all_projects': all_projects,
 		}, context_instance=RequestContext(request))
 
-def push_history(request, project_id):
+def push_history(request,project_id):
+	return push_history_with_push(request,project_id,-1)
+
+def push_history_with_push(request, project_id,push_id):
 	project = get_object_or_404(Project, pk=project_id)
 	all_projects = Project.objects.filter(user=request.user)
 	all_push_messages = PushMessage.objects.filter(user=request.user)
@@ -195,4 +202,5 @@ def push_history(request, project_id):
 			'project':project,
 			'all_projects': all_projects,
 			'all_messages':all_push_messages,
+			'push_result':push_id,
 		}, context_instance=RequestContext(request))
