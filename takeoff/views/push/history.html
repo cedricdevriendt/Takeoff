@@ -21,17 +21,15 @@
     <div class="span8">
 	<h1>Push message</h1>
 		
+		
+		
 		<ul class="nav nav-tabs">
 			<li><a href="/project/{{ project.id }}/push">Push</a></li>
 			<li class="active"><a href="/project/{{ project.id }}/history">Push history</a></li>
 			<li><a href="/project/{{ project.id }}/info">Info</a></li>
 		</ul>
-		
-	{% if push_result %}
-		Push result
-	{% endif %}
-	
-	<table class="table table-striped">
+
+		<table class="table table-striped">
     {% if all_messages %}
 	<tr><th>Creation date</th><th>Content</th><th># users</th></tr>
 	<tr>

@@ -175,7 +175,15 @@ def send_push(request, project_id):
 		
 		# First save the message (later update the status of the message)
 		push = PushMessage()
-		push.content = alert + ";" + key + ";" + value
+		
+		logger.error("Key" + key + "Value"+value)
+		
+		if key == "":
+			key = "None"
+		if value == "":
+			value = "None"
+		
+		push.content = "{'alert':" + alert + ",'key':" + key + ",'extra_value':" + value +"}"
 		push.project = project
 		push.user = request.user
 		push.push_send = datetime.datetime.now()
