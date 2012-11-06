@@ -8,7 +8,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from takeoff.util import randomHash
-import datetime
+import datetime,json
 import logging
 import urllib
 import urllib2
@@ -17,7 +17,7 @@ import urllib2
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-def send_gcm_message(api_key, reg_id, data, collapse_key=None):
+def send_gcm_message(api_key, reg_id, data, pushmessage):
     
 	# Create a json string with all the registration ids
 	data = "{\"registration_ids\":[\"ABC\"]}"
@@ -34,14 +34,22 @@ def send_gcm_message(api_key, reg_id, data, collapse_key=None):
 	# Receive a response and return it to the 
 	result = urllib2.urlopen(request).read()
 
-	return result
+	# Parsing the result json
+	parse_result_json(result,pushmessage)
 	
 def parse_result_json(result):
-	json = result
+	data = json.loads(result)
+	success_rate = data["success"]
+	failure_rate = data["failure"]
+	
+	pushmessage.success = success_rate
+	pushmessage.failure = failure_rate
+	pushmessage.save()
 
 @login_required
 def index(request):
 	all_projects = Project.objects.filter(user=request.user)
+
 	return render_to_response("index.html", {
 		'all_projects': all_projects,
 		'user' : request.user,
@@ -177,8 +185,8 @@ def send_push(request, project_id):
 		# Get all the registered users for this project
 		reg_ids = PushUser.objects.filter(project_id=project)
 
-		#Send actual push to the Google Servers
-		result = send_gcm_message(project.android_gcm_key, '123456789', alert, '')
+		#Send actual push to the Google Servers and save it
+		send_gcm_message(project.android_gcm_key, '123456789', alert,push)
 
 		return HttpResponseRedirect("/project/" + str(project.id) + "/history/"+ str(push.id))
 	else:
@@ -194,12 +202,11 @@ def push_history(request,project_id):
 def push_history_with_push(request, project_id,push_id):
 	project = get_object_or_404(Project, pk=project_id)
 	all_projects = Project.objects.filter(user=request.user)
-	all_push_messages = PushMessage.objects.filter(user=request.user)
-
+	all_push_messages = PushMessage.objects.filter(project=project_id)
+	
 	return render_to_response('push/history.html', {
 			'error':'',
 			'project':project,
 			'all_projects': all_projects,
 			'all_messages':all_push_messages,
-			'push_result':push_id,
 		}, context_instance=RequestContext(request))
