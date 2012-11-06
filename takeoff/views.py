@@ -37,7 +37,7 @@ def send_gcm_message(api_key, reg_id, data, pushmessage):
 	# Parsing the result json
 	parse_result_json(result,pushmessage)
 	
-def parse_result_json(result):
+def parse_result_json(result,pushmessage):
 	data = json.loads(result)
 	success_rate = data["success"]
 	failure_rate = data["failure"]
@@ -179,7 +179,8 @@ def send_push(request, project_id):
 		push.project = project
 		push.user = request.user
 		push.push_send = datetime.datetime.now()
-		
+		push.success =  0
+		push.failure = 0
 		push.save()
 		
 		# Get all the registered users for this project
