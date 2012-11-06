@@ -179,8 +179,6 @@ def send_push(request, project_id):
 		push.project = project
 		push.user = request.user
 		push.push_send = datetime.datetime.now()
-		push.success =  0
-		push.failure = 0
 		push.save()
 		
 		# Get all the registered users for this project
