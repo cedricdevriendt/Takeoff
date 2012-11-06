@@ -29,7 +29,7 @@
 		
 		
 		{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
-<form method="post" action="/project/{{ project.id }}/push">
+<form method="post" action="/project/{{ project.id }}/push/">
 {% csrf_token %}
   <div class="control-group">
     <div class="controls">
