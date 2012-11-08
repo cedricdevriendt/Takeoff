@@ -7,7 +7,7 @@ from django.forms import ModelForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
-from takeoff.util import randomHash
+from takeoff.util import randomHash,get_object_or_none
 import datetime,json
 import logging
 import urllib
@@ -45,6 +45,14 @@ def parse_result_json(result,pushmessage):
 	pushmessage.success = success_rate
 	pushmessage.failure = failure_rate
 	pushmessage.save()
+	
+def register_device_id(request,api_key):
+	project = get_object_or_none(Project,key=api_key)
+		
+	if project == None:
+		return HttpResponse("Project not found");
+	else:
+		return HttpResponse("Registration OK");
 
 @login_required
 def index(request):

@@ -25,6 +25,8 @@ urlpatterns = patterns('takeoff.views',
 	url(r'^user/login/$','user_login'),
 	url(r'^user/logout/$','user_logout'),
 	url(r'^accounts/login/$',redirect_to, {'url': '/user/login/'}),
+	
+	url(r'^register/device_id/(?P<api_key>\w+)/$', 'register_device_id'),
     
 	# Admin :
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

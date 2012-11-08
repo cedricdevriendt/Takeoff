@@ -28,5 +28,5 @@ class PushMessage(models.Model):
 	user = models.ForeignKey(User, editable = False)
 	content = models.CharField(max_length=300)
 	push_send = models.DateTimeField('date send',blank=True)
-	success = models.IntegerField(blank=True,default=0)
-	failure = models.IntegerField(blank=True,default=0)
+	success = models.IntegerField(default=0)
+	failure = models.IntegerField(default=0)
