@@ -17,10 +17,10 @@ import urllib2
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-def send_gcm_message(api_key, reg_id, data, pushmessage):
+def send_gcm_message(api_key, reg_id, pushmessage):
     
 	# Create a json string with all the registration ids
-	data = "{\"registration_ids\":[\"ABC\"]}"
+	data = "{\"data\": " + pushmessage.content +",\"registration_ids\":[\"APA91bFH2-9MERn0kGVxtl86Ms7iAc_zh0RNzvNGbnpjWFhIyIfOf6WkHB3eBce_1yBhsev50oBlBN4WygpLFUcqbExMJjOsMdFG67I3wagibrOWfx8pwcPWgXTo_gmgYVrPUaFBzhfq1wfX5x0vgWiTGFWHL-BIOg\"]}"
     
 	# Authorize by sending the google gcm api key
 	headers = {
@@ -39,8 +39,12 @@ def send_gcm_message(api_key, reg_id, data, pushmessage):
 	
 def parse_result_json(result,pushmessage):
 	data = json.loads(result)
+	
 	success_rate = data["success"]
 	failure_rate = data["failure"]
+	
+	logger.info(str(success_rate) + " success")
+	logger.info(str(failure_rate) + " failure")
 	
 	pushmessage.success = success_rate
 	pushmessage.failure = failure_rate
@@ -191,7 +195,7 @@ def send_push(request, project_id):
 		if value == "":
 			value = "None"
 		
-		push.content = "{'alert':" + alert + ",'key':" + key + ",'extra_value':" + value +"}"
+		push.content = "{\"alert\": \" " + alert + "\",\"extra_key\": \"" + key + "\"}"
 		push.project = project
 		push.user = request.user
 		push.push_send = datetime.datetime.now()
@@ -201,7 +205,7 @@ def send_push(request, project_id):
 		reg_ids = PushUser.objects.filter(project_id=project)
 
 		#Send actual push to the Google Servers and save it
-		send_gcm_message(project.android_gcm_key, '123456789', alert,push)
+		send_gcm_message(project.android_gcm_key, '123456789', push)
 
 		return HttpResponseRedirect("/project/" + str(project.id) + "/history/"+ str(push.id))
 	else:
