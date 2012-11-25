@@ -19,7 +19,7 @@ class Project(models.Model):
 		
 class PushUser(models.Model):
 	project = models.ForeignKey(Project)
-	reg_id = models.CharField(max_length=100)
+	reg_id = models.CharField(max_length=300)
 	android_version = models.CharField(max_length=10)
 	screen_resolution = models.CharField(max_length=12,default='1280x800')
 
