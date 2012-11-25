@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from takeoff.models import Project, PushMessage, PushUser
 from takeoff.forms import ProjectForm
 from django.template import Context, loader, RequestContext
+from django.core import serializers
 from django.forms import ModelForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -50,13 +51,29 @@ def parse_result_json(result,pushmessage):
 	pushmessage.failure = failure_rate
 	pushmessage.save()
 	
-def register_device_id(request,api_key):
-	project = get_object_or_none(Project,key=api_key)
-		
-	if project == None:
-		return HttpResponse("Project not found");
+def register_device_id(request,api_key,device_key):
+	device_id = device_key.replace("dashdash","-")
+	
+	logger.info("-------Start----------")
+	logger.info(str(device_id))
+	logger.info("--------End---------")
+
+	existingpushuser = get_object_or_none(PushUser,reg_id=device_id)
+
+	if existingpushuser != None:
+		return HttpResponse("Existing push user")
 	else:
-		return HttpResponse("Registration OK");
+		project = get_object_or_none(Project,key=api_key)
+		if project == None:
+			return HttpResponse("Project not found");
+		else:
+			pushuser = PushUser()
+			pushuser.reg_id = device_id
+			pushuser.project = project
+			pushuser.android_version = "15"
+			pushuser.screen_resolution = "1280x800"
+			pushuser.save()
+			return HttpResponse("New pushuser created")
 
 @login_required
 def index(request):
