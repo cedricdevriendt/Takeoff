@@ -18,11 +18,14 @@ import urllib2
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-def send_gcm_message(api_key, reg_id, pushmessage):
+def send_gcm_message(api_key, reg_ids, pushmessage):
+	registration_ids = ""
+	for reg_id in reg_ids:
+		registration_ids += "\"" + reg_id.reg_id + "\","
     
 	# Create a json string with all the registration ids
-	data = "{\"data\": " + pushmessage.content +",\"registration_ids\":[\"APA91bFH2-9MERn0kGVxtl86Ms7iAc_zh0RNzvNGbnpjWFhIyIfOf6WkHB3eBce_1yBhsev50oBlBN4WygpLFUcqbExMJjOsMdFG67I3wagibrOWfx8pwcPWgXTo_gmgYVrPUaFBzhfq1wfX5x0vgWiTGFWHL-BIOg\"]}"
-    
+	data = "{\"data\": " + pushmessage.content +",\"registration_ids\":[" + registration_ids + "]}"
+
 	# Authorize by sending the google gcm api key
 	headers = {
 		'Authorization': 'key=' + api_key,
@@ -242,7 +245,7 @@ def send_push(request, project_id):
 		reg_ids = PushUser.objects.filter(project_id=project)
 
 		#Send actual push to the Google Servers and save it
-		send_gcm_message(project.android_gcm_key, '123456789', push)
+		send_gcm_message(project.android_gcm_key, reg_ids, push)
 
 		return HttpResponseRedirect("/project/" + str(project.id) + "/history/"+ str(push.id))
 	else:
