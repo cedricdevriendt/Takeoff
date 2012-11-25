@@ -131,7 +131,7 @@ def edit(request, project_id):
 		'user' : request.user,
 	}, context_instance=RequestContext(request))
 	
-@login_required	
+@login_required
 def new(request):
 	if request.method == 'POST':
 		form = ProjectForm(request.POST)
@@ -169,7 +169,27 @@ def new(request):
 			'all_projects': all_projects,
 		}, context_instance=RequestContext(request))
 		#return render_to_response("new.html",{'formset':formset},context_instance=RequestContext(request))
-	
+
+@login_required
+def delete(request,project_id):
+	project = get_object_or_none(Project,id=project_id)
+	if project != None:
+		project.delete()
+	return HttpResponseRedirect("/")
+
+@login_required
+def stats(request,project_id):
+	all_projects = Project.objects.filter(user=request.user)
+	project = get_object_or_404(Project, pk=project_id)
+	all_push_users = PushUser.objects.filter(project=project)
+
+	return render_to_response("project/stats.html", {
+		'all_projects': all_projects,
+		'project':project,
+		'push_users':all_push_users,
+		'user' : request.user,
+	}, context_instance=RequestContext(request))
+
 def user_login(request):
 	if request.method == 'POST':
 		username = request.POST.get('username', '')
@@ -231,10 +251,12 @@ def send_push(request, project_id):
 			'project':project,
 			'all_projects': all_projects,
 		}, context_instance=RequestContext(request))
-
+		
+@login_required
 def push_history(request,project_id):
 	return push_history_with_push(request,project_id,-1)
-
+	
+@login_required
 def push_history_with_push(request, project_id,push_id):
 	project = get_object_or_404(Project, pk=project_id)
 	all_projects = Project.objects.filter(user=request.user)

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block center_content %}
+{% if project %}
+		<h1>Project {{project.name}}</h1>		
+		 <div class="row-fluid">
+    <div class="span4">
+	<div class="sidebar-nav">
+	<div class="well" style="width:300px; padding: 8px 0;">
+		<ul class="nav nav-list">
+		  <li><a href="/project/{{ project.id }}/"> Details</a></li>		
+		  <li><a href="/project/{{ project.id }}/edit/"> Edit</a></li>
+		  <li class="active"><a href="/project/{{ project.id }}/stats/"> Statistics</a></li>
+          <li><a href="/project/{{ project.id }}/push/"> Push</a></li>
+		  <li><a href="#"> Rich Push</a></li>
+		  <li><a href="#"> In-App Purchase</a></li>
+		  <li><a href="#"> Subscriptions</a></li>
+		</ul>
+	</div>
+</div>
+	</div>
+    <div class="span8">
+
+	
+	<table class="table table-striped">
+    <tr>
+		<td><b>Active users</b></td><td>{{push_users|length}}</td></tr><tr>
+		<td><b>Pushes this month</b></td><td>{{ project.pushes_sent_month}}</td></tr><tr>
+		<td><b>Pushes all time</b></td><td>{{ project.pushes_sent_all_time}}</td></tr><tr>
+    </table>
+	</div>
+{% endif %}
+
+<p><a href="/">Return to projects overview</a></p>
+{% endblock center_content %}
