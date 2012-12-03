@@ -15,20 +15,7 @@ api.register(PushUserResource())
 urlpatterns = patterns('takeoff.views',
     # Main project:
     url(r'^$', 'index'),
-	url(r'^project/new/$', 'new'),
-    url(r'^project/(?P<project_id>\d+)/$', 'detail'),
-	url(r'^project/(?P<project_id>\d+)/edit/$', 'edit'),
-	url(r'^project/(?P<project_id>\d+)/delete/$', 'delete'),
-	url(r'^project/(?P<project_id>\d+)/stats/$', 'stats'),
-	url(r'^project/(?P<project_id>\d+)/push/$', 'send_push'),
-	url(r'^project/(?P<project_id>\d+)/history/$', 'push_history'),
-	url(r'^project/(?P<project_id>\d+)/history/(?P<push_id>)\d+/$', 'push_history_with_push'),
-	url(r'^project/create/$', 'new'),
-	url(r'^user/login/$','user_login'),
-	url(r'^user/logout/$','user_logout'),
-	url(r'^user/p/(?P<user_name>\w+)$','profile'),
-	url(r'^accounts/login/$',redirect_to, {'url': '/user/login/'}),
-
+	
 	# not authenticated pages
 	url(r'^features/$', 'features'),
 	
@@ -41,4 +28,32 @@ urlpatterns = patterns('takeoff.views',
 	
 	# Api :
 	(r'^api/', include(api.urls)),
+)
+
+# Urls handling all the user tasks
+
+urlpatterns += patterns('takeoff.user_views',
+	url(r'^accounts/login/$',redirect_to, {'url': '/user/login/'}),
+
+	url(r'^user/login/$','user_login'),
+	url(r'^user/logout/$','user_logout'),
+	url(r'^user/p/(?P<user_name>\w+)$','profile'),
+)
+
+# Project specific actions
+
+urlpatterns += patterns('takeoff.project_views',
+	url(r'^project/new/$', 'new'),
+    url(r'^project/(?P<project_id>\d+)/$', 'detail'),
+	url(r'^project/(?P<project_id>\d+)/edit/$', 'edit'),
+	url(r'^project/(?P<project_id>\d+)/delete/$', 'delete'),
+	url(r'^project/(?P<project_id>\d+)/stats/$', 'stats'),
+)
+
+# Push messages specific actions
+
+urlpatterns += patterns('takeoff.push_views',
+	url(r'^project/(?P<project_id>\d+)/push/$', 'send_push'),
+	url(r'^project/(?P<project_id>\d+)/history/$', 'push_history'),
+	url(r'^project/(?P<project_id>\d+)/history/(?P<push_id>)\d+/$', 'push_history_with_push'),
 )
