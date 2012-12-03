@@ -26,6 +26,8 @@ def send_gcm_message(api_key, reg_ids, pushmessage):
 	# Create a json string with all the registration ids
 	data = "{\"data\": " + pushmessage.content +",\"registration_ids\":[" + registration_ids + "]}"
 
+	logger.info("Data " + str(data))
+
 	# Authorize by sending the google gcm api key
 	headers = {
 		'Authorization': 'key=' + api_key,
@@ -91,13 +93,12 @@ def index(request):
 def detail(request, project_id):
 	all_projects = Project.objects.filter(user=request.user)
 	project = get_object_or_404(Project, pk=project_id)
-	t = loader.get_template('project/detail.html')
-	c = Context({
+
+	return render_to_response('project/detail.html', {
 		'project': project,
 		'all_projects': all_projects,
 		'user' : request.user,
-	})
-	return HttpResponse(t.render(c))
+	}, context_instance=RequestContext(request))
 
 @login_required
 def edit(request, project_id):
@@ -243,6 +244,13 @@ def send_push(request, project_id):
 		
 		# Get all the registered users for this project
 		reg_ids = PushUser.objects.filter(project_id=project)
+
+		if len(reg_ids) == 0:
+			return render_to_response('push/new.html',{
+			'error':'No users to send push to!',
+			'project':project,
+			'all_projects': all_projects,
+		}, context_instance=RequestContext(request))
 
 		#Send actual push to the Google Servers and save it
 		send_gcm_message(project.android_gcm_key, reg_ids, push)
