@@ -1,94 +1,102 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-<link href="{{ STATIC_URL }}css/bootstrap-combined.min.css" rel="stylesheet">    
-    </head>
-	<body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <link href="{{ STATIC_URL }}css/bootstrap-combined.min.css" rel="stylesheet">    
+</head>
+<body>
 	<div class="container">
-	
-<div class="navbar">
-              <div class="navbar-inner">
-                <div class="container">
-                  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </a>
-                  <a class="brand" href="/">TakeOff</a>
-                  <div class="nav-collapse">
-                    <ul class="nav">
-                      <li class="inactive"><a href="/">Home</a></li>
-				      <li class="inactive"><a href="#">Download</a></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Select Application <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-						<form class="navbar-search pull-left" action="">
-							<input type="text" class="search-query" placeholder="Search project">
-						</form>
-    						  
-						  {% if all_projects %}
-    {% for project in all_projects %}
-        <li><a href="/project/{{ project.id }}/">{{ project.name }}</a></li>
-    {% endfor %}
-   
-{% else %}
-    <li class="nav-header">No projects found.</li>
-{% endif %}
-						  
-						  
-						  <li class="divider"></li>
-                          <li class="nav-header">Other actions</li>
-                          <li><a href="/project/new">Create new project</a></li>
-                          <li><a href="/">View all projects</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                    
-                    <ul class="nav pull-right">
-                      <li class="divider-vertical"></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						
-						{% if user.is_authenticated %}
-							{{ user.username }}
-						{% else %}
-							Guest
-						{% endif %}
-						
-						<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-						{% if user.is_authenticated %}
-                          <li><a href="#">Edit profile</a></li>
-                          <li><a href="/user/logout">Logout</a></li>
-						{% else %}
-							<div>
-							<form method="POST" action="/user/login/">
-								{% csrf_token %}
-								Username: <input type="text" name="username" size="50" /><br />
-								Password: <input type="password" name="password" size="50" /><br />
-								<div align="center">
-								<p><input class="btn" type="submit" value="Login" /></p>
-								</div>
-							</form>
-							</div>
-						{% endif %}
-                        </ul>
-                      </li>
-                    </ul>
-                  </div><!-- /.nav-collapse -->
-                </div>
-              </div><!-- /navbar-inner -->
-            </div>
 
-	{% block center_content %}
-	{% endblock center_content %}
-	
-	</div>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js"></script>
-    </body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">TakeOff</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="inactive"><a href="/">Home</a></li>
+
+              {% if user.is_authenticated %}
+              <li class="inactive"><a href="#">Download</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Select Application <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <form class="navbar-search pull-left" action="">
+                   <input type="text" class="search-query" placeholder="Search project">
+                 </form>
+
+                 {% if all_projects %}
+                 {% for project in all_projects %}
+                 <li><a href="/project/{{ project.id }}/">{{ project.name }}</a></li>
+                 {% endfor %}
+
+                 {% else %}
+                 <li class="nav-header">No projects found.</li>
+                 {% endif %}
+
+
+                 <li class="divider"></li>
+                 <li class="nav-header">Other actions</li>
+                 <li><a href="/project/new">Create new project</a></li>
+                 <li><a href="/">View all projects</a></li>
+               </ul>
+             </li>
+
+             {% else %}
+             <li class="inactive"><a href="#">Pricing</a></li>
+             <li class="inactive"><a href="#">Documentation</a></li>
+
+             {% endif %}
+           </ul>
+
+           <ul class="nav pull-right">
+            <li class="divider-vertical"></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                {% if user.is_authenticated %}
+                {{ user.username }}
+                {% else %}
+                Guest
+                {% endif %}
+
+                <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  {% if user.is_authenticated %}
+                  <li><a href="#">Edit profile</a></li>
+                  <li><a href="/user/logout">Logout</a></li>
+                  {% else %}
+                  <div>
+                   <form method="POST" action="/user/login/">
+                    {% csrf_token %}
+                    Username: <input type="text" name="username" size="50" /><br />
+                    Password: <input type="password" name="password" size="50" /><br />
+                    <div align="center">
+                      <p><input class="btn" type="submit" value="Login" /></p>
+                    </div>
+                  </form>
+                </div>
+                {% endif %}
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div>
+    </div><!-- /navbar-inner -->
+  </div>
+
+  {% block center_content %}
+  {% endblock center_content %}
+
+</div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js"></script>
+</body>
 </html>

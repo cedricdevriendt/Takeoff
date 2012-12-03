@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from takeoff.models import Project, PushMessage, PushUser
+from django.contrib.auth.models import User
 from takeoff.forms import ProjectForm
 from django.template import Context, loader, RequestContext
 from django.core import serializers
@@ -80,15 +81,21 @@ def register_device_id(request,api_key,device_key):
 			pushuser.save()
 			return HttpResponse("New pushuser created")
 
-@login_required
 def index(request):
-	all_projects = Project.objects.filter(user=request.user)
+	if not request.user.is_authenticated():
+		return HttpResponseRedirect("/features")
+	else:
+		all_projects = Project.objects.filter(user=request.user)
 
-	return render_to_response("index.html", {
-		'all_projects': all_projects,
-		'user' : request.user,
+		return render_to_response("index.html", {
+			'all_projects': all_projects,
+			'user' : request.user,
+		}, context_instance=RequestContext(request))
+
+def features(request):
+	return render_to_response('features.html', {
 	}, context_instance=RequestContext(request))
-	
+		
 @login_required
 def detail(request, project_id):
 	all_projects = Project.objects.filter(user=request.user)
@@ -215,6 +222,16 @@ def user_logout(request):
     auth.logout(request)
 	#return HttpResponse("Logout OK")
     return render_to_response("login.html", {'error':'Succesfull logout'}, context_instance=RequestContext(request))
+
+def profile(request,user_name):
+	profile_user = get_object_or_none(User,username=user_name)
+	all_projects = Project.objects.filter(user=request.user)
+
+	return render_to_response('user/profile.html', {
+		'all_projects': all_projects,
+		'user' : request.user,
+		'profile_user': profile_user,
+	}, context_instance=RequestContext(request))
 
 @login_required	
 def send_push(request, project_id):

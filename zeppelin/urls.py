@@ -26,7 +26,11 @@ urlpatterns = patterns('takeoff.views',
 	url(r'^project/create/$', 'new'),
 	url(r'^user/login/$','user_login'),
 	url(r'^user/logout/$','user_logout'),
+	url(r'^user/p/(?P<user_name>\w+)$','profile'),
 	url(r'^accounts/login/$',redirect_to, {'url': '/user/login/'}),
+
+	# not authenticated pages
+	url(r'^features/$', 'features'),
 	
 	# Register device
 	url(r'^register/device_id/(?P<api_key>\w+)/(?P<device_key>\w+)/$', 'register_device_id'),
