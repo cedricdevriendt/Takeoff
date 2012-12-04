@@ -77,23 +77,18 @@ def send_push(request, project_id):
 		# Get all the registered users for this project
 		reg_ids = PushUser.objects.filter(project_id=project)
 
+		thelocals = locals()
+		thelocals.update({'error':'No users to send push to!'})
+
 		if len(reg_ids) == 0:
-			return render_to_response('push/new.html',{
-			'error':'No users to send push to!',
-			'project':project,
-			'all_projects': all_projects,
-		}, context_instance=RequestContext(request))
+			return render_to_response('push/new.html', thelocals, context_instance=RequestContext(request))
 
 		#Send actual push to the Google Servers and save it
 		send_gcm_message(project.android_gcm_key, reg_ids, push)
 
 		return HttpResponseRedirect("/project/" + str(project.id) + "/history/"+ str(push.id))
 	else:
-		return render_to_response('push/new.html', {
-			'error':'',
-			'project':project,
-			'all_projects': all_projects,
-		}, context_instance=RequestContext(request))
+		return render_to_response('push/new.html', locals(), context_instance=RequestContext(request))
 		
 @login_required
 def push_history(request,project_id):
@@ -105,9 +100,4 @@ def push_history_with_push(request, project_id,push_id):
 	all_projects = Project.objects.filter(user=request.user)
 	all_push_messages = PushMessage.objects.filter(project=project_id)
 	
-	return render_to_response('push/history.html', {
-			'error':'',
-			'project':project,
-			'all_projects': all_projects,
-			'all_messages':all_push_messages,
-		}, context_instance=RequestContext(request))
+	return render_to_response('push/history.html', locals(), context_instance=RequestContext(request))

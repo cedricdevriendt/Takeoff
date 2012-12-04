@@ -15,10 +15,7 @@ def index(request):
 	else:
 		all_projects = Project.objects.filter(user=request.user)
 
-		return render_to_response("index.html", {
-			'all_projects': all_projects,
-			'user' : request.user,
-		}, context_instance=RequestContext(request))
+		return render_to_response("index.html", locals(), context_instance=RequestContext(request))
 
 def features(request):
 	return render_to_response('features.html', {

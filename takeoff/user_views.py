@@ -31,8 +31,4 @@ def profile(request,user_name):
 	profile_user = get_object_or_none(User,username=user_name)
 	all_projects = Project.objects.filter(user=request.user)
 
-	return render_to_response('user/profile.html', {
-		'all_projects': all_projects,
-		'user' : request.user,
-		'profile_user': profile_user,
-	}, context_instance=RequestContext(request))
+	return render_to_response('user/profile.html', locals(), context_instance=RequestContext(request))

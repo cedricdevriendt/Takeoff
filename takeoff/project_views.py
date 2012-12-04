@@ -16,11 +16,7 @@ def detail(request, project_id):
 	all_projects = Project.objects.filter(user=request.user)
 	project = get_object_or_404(Project, pk=project_id)
 
-	return render_to_response('project/detail.html', {
-		'project': project,
-		'all_projects': all_projects,
-		'user' : request.user,
-	}, context_instance=RequestContext(request))
+	return render_to_response('project/detail.html', locals() , context_instance=RequestContext(request))
 
 @login_required
 def edit(request, project_id):
@@ -42,18 +38,13 @@ def edit(request, project_id):
 			project.android_gcm_key = fgcm_key
 			project.save()
 
-			return render_to_response('project/detail.html', {
-				'project': project,
-				'all_projects': all_projects,
-				'user' : request.user,
-				'saved': True,
-			}, context_instance=RequestContext(request))
+			# Save all local variables + additional saved boolean
+			thelocals = locals()
+			thelocals.update({'saved':True})
+
+			return render_to_response('project/detail.html', thelocals , context_instance=RequestContext(request))
 	
-	return render_to_response('project/edit.html', {
-		'project': project,
-		'all_projects': all_projects,
-		'user' : request.user,
-	}, context_instance=RequestContext(request))
+	return render_to_response('project/edit.html', locals(), context_instance=RequestContext(request))
 	
 @login_required
 def new(request):
@@ -76,7 +67,7 @@ def new(request):
 			newproject.pushes_sent_month = 0
 			newproject.pushes_sent_all_time = 0
 			newproject.user = request.user
-			newproject.create_date = datetime.datetime.now()
+			newproject.create_date = datetime.now()
 			newproject.key = randomHash(22)
 			
 			newproject.save()
@@ -86,11 +77,7 @@ def new(request):
 	else:
 		formset = ProjectForm()
 		all_projects = Project.objects.filter(user=request.user)
-		return render_to_response('project/new.html', {
-			'error':'',
-			'form':formset,
-			'all_projects': all_projects,
-		}, context_instance=RequestContext(request))
+		return render_to_response('project/new.html', locals(), context_instance=RequestContext(request))
 
 @login_required
 def delete(request,project_id):
@@ -117,13 +104,5 @@ def stats(request,project_id):
 	# All push messages all time
 	messages_alltime = PushMessage.objects.filter(project_id=project_id,user = request.user)
 
-	return render_to_response("project/stats.html", {
-		'all_projects': all_projects,
-		'project':project,
-		'push_users':all_push_users,
-		'user' : request.user,
-		'messages_month':messages_month,
-		'messages_year':messages_year,
-		'messages_alltime':messages_alltime,
-	}, context_instance=RequestContext(request))
+	return render_to_response("project/stats.html", locals(), context_instance=RequestContext(request))
 
