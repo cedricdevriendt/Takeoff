@@ -1,11 +1,15 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from takeoff.models import Project,PushUser
+from takeoff.models import Project,PushUser,PushMessage
 from takeoff.forms import ProjectForm
 from django.template import  RequestContext
 from takeoff.util import randomHash,get_object_or_none
-import datetime
+from datetime import date,timedelta,datetime
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 @login_required
 def detail(request, project_id):
@@ -101,10 +105,25 @@ def stats(request,project_id):
 	project = get_object_or_404(Project, pk=project_id)
 	all_push_users = PushUser.objects.filter(project=project)
 
+	# All push messages this month
+	startdate = date.today() + timedelta(1)
+	enddate_month = startdate - timedelta(31)
+	messages_month = PushMessage.objects.filter(project_id=project_id,push_send__lt=startdate,push_send__gt=enddate_month)
+
+	# ALl push messages this year
+	enddate_year = startdate - timedelta(365)
+	messages_year = PushMessage.objects.filter(project_id=project_id,push_send__lt=startdate,push_send__gt=enddate_year)
+	
+	# All push messages all time
+	messages_alltime = PushMessage.objects.filter(project_id=project_id,user = request.user)
+
 	return render_to_response("project/stats.html", {
 		'all_projects': all_projects,
 		'project':project,
 		'push_users':all_push_users,
 		'user' : request.user,
+		'messages_month':messages_month,
+		'messages_year':messages_year,
+		'messages_alltime':messages_alltime,
 	}, context_instance=RequestContext(request))
 
