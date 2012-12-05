@@ -54,6 +54,14 @@ def send_push(request, project_id):
 	all_projects = Project.objects.filter(user=request.user)
 	
 	if request.method == 'POST':
+		
+		# Get all the registered users for this project
+		reg_ids = PushUser.objects.filter(project_id=project)
+		if len(reg_ids) == 0:
+			thelocals = locals()
+			thelocals.update({'error':'No users to send push to!'})
+			return render_to_response('push/new.html', thelocals, context_instance=RequestContext(request))
+
 		alert = request.POST.get('alert', '')
 		key = request.POST.get('extra_key', '')
 		value = request.POST.get('extra_value', '')
@@ -74,15 +82,6 @@ def send_push(request, project_id):
 		push.push_send = datetime.datetime.now()
 		push.save()
 		
-		# Get all the registered users for this project
-		reg_ids = PushUser.objects.filter(project_id=project)
-
-		thelocals = locals()
-		thelocals.update({'error':'No users to send push to!'})
-
-		if len(reg_ids) == 0:
-			return render_to_response('push/new.html', thelocals, context_instance=RequestContext(request))
-
 		#Send actual push to the Google Servers and save it
 		send_gcm_message(project.android_gcm_key, reg_ids, push)
 
