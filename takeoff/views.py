@@ -1,8 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from takeoff.models import Project, PushUser
+from takeoff.models import Project, PushUser,PushMessage
 from django.template import RequestContext
 from takeoff.util import get_object_or_none
+from datetime import date,timedelta,datetime
 import logging
 
 
@@ -14,6 +15,22 @@ def index(request):
 		return HttpResponseRedirect("/features")
 	else:
 		all_projects = Project.objects.filter(user=request.user)
+
+		for p in all_projects:
+
+			# All push messages this month
+			startdate = date.today() + timedelta(1)
+			enddate_month = startdate - timedelta(31)
+			p.pushes_sent_month = len(PushMessage.objects.filter(project_id=p.id,push_send__lt=startdate,push_send__gt=enddate_month))
+
+			# ALl push messages this year
+			#enddate_year = startdate - timedelta(365)
+			#messages_year = PushMessage.objects.filter(project_id=p.id,push_send__lt=startdate,push_send__gt=enddate_year)
+	
+			# All push messages all time
+			p.pushes_sent_all_time = len(PushMessage.objects.filter(project_id=p.id,user = request.user))
+
+
 
 		return render_to_response("index.html", locals(), context_instance=RequestContext(request))
 
