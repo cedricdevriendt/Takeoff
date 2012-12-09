@@ -30,7 +30,7 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
 	#return HttpResponse("Logout OK")
-    return render_to_response("login.html", {'error':'Succesfull logout'}, context_instance=RequestContext(request))
+    return render_to_response("user/login.html", {'error':'Succesfull logout'}, context_instance=RequestContext(request))
 
 def register(request):
 	if request.method == "POST":
@@ -99,7 +99,7 @@ def register(request):
 			return HttpResponseRedirect("/")
 		else:
 			error = "Unable to authenticate you. Please try again."
-			return render_to_response("register.html", {'error':error}, context_instance=RequestContext(request))
+			return render_to_response("user/register.html", {'error':error}, context_instance=RequestContext(request))
 
 	else:
 		return render_to_response('user/register.html', locals(), context_instance=RequestContext(request))
