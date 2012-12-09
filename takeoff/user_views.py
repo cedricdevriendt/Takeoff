@@ -83,7 +83,7 @@ def register(request):
 		# It's safe to save the user
 		newuser = User()
 		newuser.username = username
-		newuser.password = password
+		newuser.set_password(password)
 		newuser.email = email
 		newuser.first_name = first
 		newuser.last_name = last
