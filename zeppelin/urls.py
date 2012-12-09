@@ -37,6 +37,7 @@ urlpatterns += patterns('takeoff.user_views',
 
 	url(r'^user/login/$','user_login'),
 	url(r'^user/logout/$','user_logout'),
+	url(r'^user/register/$','register'),
 	url(r'^user/p/(?P<user_name>\w+)/$','profile'),
 )
 
