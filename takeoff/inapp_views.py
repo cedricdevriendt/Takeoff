@@ -12,6 +12,9 @@ import logging
 def index(request,project_id):
 	project = get_object_or_404(Project, pk=project_id)
 	all_inapps = InApp.objects.filter(project=project)
+
+	return render_to_response('inapp/new.html', locals() , context_instance=RequestContext(request))
+
 	return HttpResponse("Implementation needed")
 
 @login_required
