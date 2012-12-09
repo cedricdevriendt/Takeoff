@@ -22,10 +22,10 @@ def user_login(request):
 			return HttpResponseRedirect("/")
 		else:
 			error = "Username/password incorrect"
-			return render_to_response("login.html", {'error':error}, context_instance=RequestContext(request))
+			return render_to_response("user/login.html", {'error':error}, context_instance=RequestContext(request))
 	else:
 		error = ""
-		return render_to_response("login.html", {'error':error}, context_instance=RequestContext(request))
+		return render_to_response("user/login.html", {'error':error}, context_instance=RequestContext(request))
 	
 def user_logout(request):
     auth.logout(request)
