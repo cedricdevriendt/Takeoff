@@ -28,3 +28,18 @@ class PushMessage(models.Model):
 	push_send = models.DateTimeField('date send',blank=True)
 	success = models.IntegerField(default=0)
 	failure = models.IntegerField(default=0)
+
+class InApp(models.Model):
+	project = models.ForeignKey(Project)
+	product_id = models.CharField(max_length=200)
+	name = models.CharField(max_length=200)
+	description = models.CharField(max_length=400,blank=True)
+	isFree = models.BooleanField()
+	price = models.IntegerField(default=0)
+	support_android = models.BooleanField()
+	support_iOS = models.BooleanField()
+	icon_url = models.CharField(max_length=200)
+	preview_url = models.CharField(max_length=200)
+	create_date = models.DateTimeField('date created',blank=True)
+	last_modified = models.DateTimeField('last_modified',blank=True)
+		

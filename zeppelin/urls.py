@@ -58,3 +58,8 @@ urlpatterns += patterns('takeoff.push_views',
 	url(r'^project/(?P<project_id>\d+)/history/$', 'push_history'),
 	url(r'^project/(?P<project_id>\d+)/history/(?P<push_id>)\d+/$', 'push_history_with_push'),
 )
+
+urlpatterns += patterns('takeoff.inapp_views',
+	url(r'^project/(?P<project_id>\d+)/inapp/$', 'index'),
+	url(r'^project/(?P<project_id>\d+)/inapp/create/$', 'create'),
+)
