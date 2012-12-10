@@ -5,7 +5,7 @@ class Project(models.Model):
 	name = models.CharField(max_length=200)
 	description = models.CharField(max_length=400,blank=True)
 	key = models.CharField(max_length=200,blank=True)
-	android_package = models.CharField(max_length=200)
+	android_package = models.CharField(max_length=200,unique=True)
 	android_gcm_key = models.CharField(max_length=200)
 	create_date = models.DateTimeField('date created',blank=True)
 	pushes_sent_month = models.IntegerField(blank=True)
@@ -31,7 +31,7 @@ class PushMessage(models.Model):
 
 class InApp(models.Model):
 	project = models.ForeignKey(Project)
-	product_id = models.CharField(max_length=200)
+	product_id = models.CharField(max_length=200,unique=True)
 	content = models.FileField(upload_to='inapp/%Y/%m/%d')
 	name = models.CharField(max_length=200)
 	description = models.CharField(max_length=400,blank=True)
