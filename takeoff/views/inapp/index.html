@@ -12,7 +12,7 @@
 					<li><a href="/project/{{ project.id }}/stats/"> Statistics</a></li>
 					<li><a href="/project/{{ project.id }}/push"> Push</a></li>
 					<li><a href="#"> Rich Push</a></li>
-					<li><a href="/project/{{ project.id }}/inapp/"> In-App Purchase<ul class="nav nav-list"><li class="active"><a href="/project/{{ project.id }}/inapp/create/">Create In App</a></li></ul></a></li>
+					<li class="active"><a href="/project/{{ project.id }}/inapp/"> In-App Purchase<ul class="nav nav-list"><li><a href="/project/{{ project.id }}/inapp/create/">Create In App</a></li></ul></a></li>
 					<li><a href="#"> Subscriptions</a></li>
 				</ul>
 			</div>
@@ -29,17 +29,7 @@
 		</div>
 		{% endif %}
 
-		<p>Create new content</p>
-
-		<form action="." method="post" enctype="multipart/form-data">
-			{% csrf_token %}
-			<p>{{ form.non_field_errors }}</p>
-			<p>
-				{{ form.inappfile.errors }}
-				{{ form.inappfile }}
-			</p>
-			<p><input type="submit" value="Upload" /></p>
-		</form>
+		<p>All your In App purchases</p>
 	</div>
 </div>
 {% endif %}

@@ -32,6 +32,7 @@ class PushMessage(models.Model):
 class InApp(models.Model):
 	project = models.ForeignKey(Project)
 	product_id = models.CharField(max_length=200)
+	content = models.FileField(upload_to='inapp/%Y/%m/%d')
 	name = models.CharField(max_length=200)
 	description = models.CharField(max_length=400,blank=True)
 	isFree = models.BooleanField()
