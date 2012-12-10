@@ -29,7 +29,32 @@
 		</div>
 		{% endif %}
 
+		{% if all_inapps %}
+		<table class="table table-striped table-hover">
+			<tr>
+				<th>In App Thumbnail</th>
+				<th>Product ID</th>
+				<th>Type</th>
+				<th>Downloads day / month</th>
+			</tr>
+			{% for inapp in all_inapps %}
+			<tr>
+				<td>{{ inapp.name }}</a></td>
+				<td>{{inapp.product_id}}</td>
+				{% if inapp.isFree %}
+					<td>Free</td>
+				{% else %}
+				<td>Paid</td>
+				{% endif %}
+
+				<td>5 / 16 Downloads</td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% else %}
+
 		<p>All your In App purchases</p>
+		{% endif %}
 	</div>
 </div>
 {% endif %}
