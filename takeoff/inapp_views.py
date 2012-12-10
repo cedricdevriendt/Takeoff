@@ -7,6 +7,8 @@ from django.template import  RequestContext
 from takeoff.util import randomHash,get_object_or_none
 from datetime import date,timedelta,datetime
 import logging
+from django.core import serializers
+
 
 @login_required
 def index(request,project_id):
@@ -39,3 +41,7 @@ def create(request,project_id):
 		form = InAppForm() # A empty, unbound form
 
 	return render_to_response('inapp/new.html', locals() , context_instance=RequestContext(request))
+
+def index_json(request,project_id):
+	data = serializers.serialize('json', InApp.objects.filter(project=project_id))
+	return HttpResponse(data, mimetype='application/json')

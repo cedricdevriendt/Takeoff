@@ -62,4 +62,5 @@ urlpatterns += patterns('takeoff.push_views',
 urlpatterns += patterns('takeoff.inapp_views',
 	url(r'^project/(?P<project_id>\d+)/inapp/$', 'index'),
 	url(r'^project/(?P<project_id>\d+)/inapp/create/$', 'create'),
+	url(r'^project/(?P<project_id>\d+)/inapp/json/$', 'index_json'),
 )
