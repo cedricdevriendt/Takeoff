@@ -2,12 +2,18 @@ from django.db import models
 from django import forms
 
 class ProjectForm(forms.Form):
-	name = models.CharField(max_length=200)
-	gcm_key = models.CharField(max_length=400)
-	package = models.CharField(max_length=400)
+	name = forms.CharField(max_length=200)
+	gcm_key = forms.CharField(max_length=400)
+	package = forms.CharField(max_length=400)
 
 class InAppForm(forms.Form):
-    inappfile = forms.FileField(
-        label='Select a file',
-        help_text='Additional info'
-    )
+    inappfile = forms.FileField()
+    product_id = forms.CharField(max_length=200)
+    name = forms.CharField(max_length=200,required=False)
+    description = forms.CharField(max_length=400,required=False)
+    isFree = forms.BooleanField(required=False)
+    price = forms.CharField(required=False)
+    support_android = forms.BooleanField(required=False)
+    support_iOS = forms.BooleanField(required=False)
+    icon = forms.FileField(required=False)
+    preview = forms.FileField(required=False)
