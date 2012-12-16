@@ -41,7 +41,7 @@ def create(request,project_id):
 
         	# Other uploads
         	newinapp.icon = request.FILES['icon']
-        	newinapp.preview = request.FILES['inappfile']
+        	newinapp.preview = request.FILES['preview']
 
         	# In App Purchase settings
         	newinapp.product_id = form.cleaned_data['product_id']
