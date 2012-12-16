@@ -1,16 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import redirect_to
 
-from tastypie.api import Api
 from takeoff.api import ProjectResource,PushUserResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-api = Api(api_name='v1')
-api.register(ProjectResource())
-api.register(PushUserResource())
 
 urlpatterns = patterns('takeoff.views',
     # Main project:
@@ -25,9 +20,6 @@ urlpatterns = patterns('takeoff.views',
 	# Admin :
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-	
-	# Api :
-	(r'^api/', include(api.urls)),
 )
 
 # Urls handling all the user tasks
