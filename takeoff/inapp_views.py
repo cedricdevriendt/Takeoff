@@ -9,6 +9,8 @@ from datetime import date,timedelta,datetime
 import logging
 from django.core import serializers
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 @login_required
 def index(request,project_id):
@@ -26,20 +28,37 @@ def create(request,project_id):
 	if request.method == 'POST':
 		form = InAppForm(request.POST, request.FILES)
     	if form.is_valid():
+    		# Loading the uploaded file into the InApp object
         	newinapp = InApp(content = request.FILES['inappfile'])
+
+        	# Automatic values
         	newinapp.project = project
-        	#newinapp.product_id = "com.ceetn.yeah.it.works"
         	newinapp.create_date = datetime.now()
         	newinapp.last_modified = datetime.now()
-        	newinapp.save()
+        	
+        	# Change the filename
+        	#newinapp.content.save(project_id + '_' + newinapp.content.name, newinapp.content, save=False)
 
-        	# Redirect to the document list after POST
-			#return render_to_response('project/' + project_id + '.html', locals() , context_instance=RequestContext(request))
+        	# Other uploads
+        	newinapp.icon = request.FILES['icon']
+        	newinapp.preview = request.FILES['inappfile']
+
+        	# In App Purchase settings
+        	newinapp.product_id = form.cleaned_data['product_id']
+        	newinapp.description = form.cleaned_data['description']
+        	newinapp.name = form.cleaned_data['name']
+        	newinapp.price = form.cleaned_data['price']
+        	newinapp.isFree = form.cleaned_data['isFree']
+        	newinapp.support_android = form.cleaned_data['support_android']
+        	newinapp.support_iOS = form.cleaned_data['support_iOS']
+
+        	newinapp.save()
 
         	return HttpResponseRedirect('/project/' + project_id + '/inapp/')
 	else:
 		form = InAppForm() # A empty, unbound form
 
+	form.fields['isFree'].widget.attrs = {'class':'checkbox'}
 	return render_to_response('inapp/new.html', locals() , context_instance=RequestContext(request))
 
 def index_json(request,project_id):
