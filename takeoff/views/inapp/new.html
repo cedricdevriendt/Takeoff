@@ -33,12 +33,27 @@
 
 		<form action="." method="post" enctype="multipart/form-data">
 			{% csrf_token %}
-			<p>{{ form.non_field_errors }}</p>
-			<p>
-				{{ form.inappfile.errors }}
-				{{ form.inappfile }}
-			</p>
-			<p><input type="submit" value="Upload" /></p>
+
+			<div class="input-prepend input-append">
+				<span class="add-on">€</span>
+				<input class="span2" id="appendedPrependedInput" type="text">
+			</div>
+
+			{% for field in form %}
+
+			<tr>
+				<th>{{ field.label_tag }} {% if field.field.required %}<span class="requ">*</span>{% endif %}</th>
+				<td>{{ field.errors }}{{ field }}
+					{% if field.help_text %}
+					<p class="help_text">{{ field.help_text }}</p>
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+
+			
+
+			<p><input class="btn btn-primary" type="submit" value="Upload In-App" /></p>
 		</form>
 	</div>
 </div>
