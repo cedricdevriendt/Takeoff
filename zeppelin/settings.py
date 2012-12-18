@@ -164,6 +164,9 @@ LOGGING = {
         }
     }
 }
+<<<<<<< HEAD
 
 import dj_database_url
 DATABASES['default'] =  dj_database_url.config()
+=======
+>>>>>>> 1c551e03bc07f4d1d48ed5acf4300532216e1899

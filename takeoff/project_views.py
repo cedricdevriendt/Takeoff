@@ -63,9 +63,17 @@ def new(request):
 	if request.method == 'POST':
 		form = ProjectForm(request.POST)
 		if form.is_valid():
+<<<<<<< HEAD
 			fname = form.cleaned_data['name']
 			fgcm_key = form.cleaned_data['gcm_key']
 			fpackage = form.cleaned_data['package']
+=======
+			cd = form.cleaned_data
+			
+			fname = request.POST.get('name', '')
+			fgcm_key = request.POST.get('gcm_key', '')
+			fpackage = request.POST.get('package_name', '')
+>>>>>>> 1c551e03bc07f4d1d48ed5acf4300532216e1899
 			
 			# Create new project
 			newproject = Project()
@@ -85,7 +93,11 @@ def new(request):
 		else:
 			return HttpResponse("Project not saved")
 	else:
+<<<<<<< HEAD
 		form = ProjectForm()
+=======
+		formset = ProjectForm()
+>>>>>>> 1c551e03bc07f4d1d48ed5acf4300532216e1899
 		all_projects = Project.objects.filter(user=request.user)
 		return render_to_response('project/new.html', locals(), context_instance=RequestContext(request))
 

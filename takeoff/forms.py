@@ -3,8 +3,13 @@ from django import forms
 
 class ProjectForm(forms.Form):
 	name = forms.CharField(max_length=200)
+<<<<<<< HEAD
 	package = forms.CharField(max_length=400)
 	gcm_key = forms.CharField(max_length=100)
+=======
+	gcm_key = forms.CharField(max_length=400)
+	package = forms.CharField(max_length=400)
+>>>>>>> 1c551e03bc07f4d1d48ed5acf4300532216e1899
 
 class InAppForm(forms.Form):
     inappfile = forms.FileField()
