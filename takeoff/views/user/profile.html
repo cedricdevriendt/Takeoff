@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block center_content %}
+
+{% if profile_user %}
+
+<h1>User {{profile_user.username}}</h1>
+
+{% else %}
+
+User not found.
+
+{% endif %}
+
+{% endblock center_content %}

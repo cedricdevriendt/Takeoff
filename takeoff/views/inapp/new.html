@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block center_content %}
+{% if project %}
+<h1>Project {{project.name}}</h1>		
+<div class="row-fluid">
+	<div class="span4">
+		<div class="sidebar-nav">
+			<div class="well" style="width:300px; padding: 8px 0;">
+				<ul class="nav nav-list">
+					<li><a href="/project/{{ project.id }}/"> Details</a></li>		
+					<li><a href="/project/{{ project.id }}/edit"> Edit</a></li>
+					<li><a href="/project/{{ project.id }}/stats/"> Statistics</a></li>
+					<li><a href="/project/{{ project.id }}/push"> Push</a></li>
+					<li><a href="#"> Rich Push</a></li>
+					<li><a href="/project/{{ project.id }}/inapp/"> In-App Purchase<ul class="nav nav-list"><li class="active"><a href="/project/{{ project.id }}/inapp/create/">Create In App</a></li></ul></a></li>
+					<li><a href="#"> Subscriptions</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="span8">
+		<h1>In App Purchase</h1>
+
+		
+		{% if error %}
+		<div class="alert">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Warning!</strong> {{ error }}
+		</div>
+		{% endif %}
+
+		<p>Create new content</p>
+
+		<form action="." method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<div class="input-prepend input-append">
+				<span class="add-on">€</span>
+				<input class="span2" id="appendedPrependedInput" type="text">
+			</div>
+
+			{% for field in form %}
+
+			<tr>
+				<th>{{ field.label_tag }} {% if field.field.required %}<span class="requ">*</span>{% endif %}</th>
+				<td>{{ field.errors }}{{ field }}
+					{% if field.help_text %}
+					<p class="help_text">{{ field.help_text }}</p>
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+
+			
+
+			<p><input class="btn btn-primary" type="submit" value="Upload In-App" /></p>
+		</form>
+	</div>
+</div>
+{% endif %}
+{% endblock center_content %}

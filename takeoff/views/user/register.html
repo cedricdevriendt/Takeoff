@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block center_content %}
+<h1>Registration</h1>
+
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+<form method="post" action=".">
+  {% csrf_token %}
+  <div class="control-group">
+    <div class="controls">
+      <input type="text" id="username" name="username" placeholder="Username">
+    </div>
+
+    <div class="controls">
+      <input type="text" id="first" name="first" placeholder="First name">
+      <input type="text" id="last" name="last" placeholder="Last name">
+    </div>
+
+    <div class="controls">
+      <input type="text" id="email" name="email" placeholder="E-mail">
+    </div>
+
+    <div class="controls">
+      <input type="password" id="pass" name="pass" placeholder="Password">
+      <input type="password" id="passagain" name="passagain" placeholder="Again password">
+    </div>
+  </div>
+  
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+  </div>
+</form>
+{% endblock center_content %}
