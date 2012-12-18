@@ -1,8 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import redirect_to
 
-from takeoff.api import ProjectResource,PushUserResource
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
