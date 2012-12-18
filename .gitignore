@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 venv
 *.pyc
 .DS_Store
 requirements.txt
 Procfile
-=======
 *.log
-*.pot
-*.pyc
 local_settings.py
->>>>>>> 1c551e03bc07f4d1d48ed5acf4300532216e1899
