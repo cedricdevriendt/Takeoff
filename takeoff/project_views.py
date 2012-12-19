@@ -37,24 +37,22 @@ def edit(request, project_id):
 	
 	# Edit project
 	if request.method == 'POST':
-		form = ProjectForm(request.POST)
-		if form.is_valid():
-			cd = form.cleaned_data
-			
-			fname = request.POST.get('name', '')
-			fgcm_key = request.POST.get('android_gcm_key', '')
-			fpackage = request.POST.get('android_package', '')
-			
-			project.name = fname
-			project.android_package = fpackage
-			project.android_gcm_key = fgcm_key
-			project.save()
+		#form = ProjectForm(request.POST)
+		#if form.is_valid():
+		fname = request.POST.get('name', '')
+		fgcm_key = request.POST.get('android_gcm_key', '')
+		fpackage = request.POST.get('android_package', '')
+		
+		project.name = fname
+		project.android_package = fpackage
+		project.android_gcm_key = fgcm_key
+		project.save()
 
-			# Save all local variables + additional saved boolean
-			thelocals = locals()
-			thelocals.update({'saved':True})
+		# Save all local variables + additional saved boolean
+		thelocals = locals()
+		thelocals.update({'saved':True})
 
-			return render_to_response('project/detail.html', thelocals , context_instance=RequestContext(request))
+		return render_to_response('project/detail.html', thelocals , context_instance=RequestContext(request))
 	
 	return render_to_response('project/edit.html', locals(), context_instance=RequestContext(request))
 	
