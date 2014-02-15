@@ -16,3 +16,7 @@ Why building a clone?
 ================
 
 Urban Airship stopped support for In-app Purchases so I created a clone myself.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ceetn/takeoff/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
